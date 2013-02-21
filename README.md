@@ -1,7 +1,7 @@
 # Rubycon
 
-A fully featured and convenient RCON CLI / console to manage your Source dedicated gameserver.
-This program is not stable. Use on your own risk.
+A fully featured and convenient rcon CLI to manage your Source Dedicated Gameservers.
+This program is not stable. Use at your own risk.
 
 Features:
  * Autocompletion of commands
@@ -9,16 +9,6 @@ Features:
  * bar
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'rubycon'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install rubycon
 
