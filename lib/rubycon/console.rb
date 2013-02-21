@@ -38,7 +38,13 @@ module Rubycon
     end
 
     def create_server
-      SourceServer.new(@host, @port)
+      begin
+        SourceServer.new(@host, @port)
+      rescue SocketError
+        puts "'#{@host}' not found. Wrong host?"
+        exit
+      end
+
     end
 
     def auth_if_necessary
@@ -48,11 +54,17 @@ module Rubycon
     end
 
     def rcon_exec(line)
-      auth_if_necessary
       begin
+        auth_if_necessary
         @server.rcon_exec(line)
       rescue RCONNoAuthError
         puts 'Could not authenticate with gameserver. Wrong rcon password?'
+        exit
+      rescue Errno::ECONNREFUSED
+        puts 'Connection refused. Wrong host?'
+        exit
+      rescue SteamCondenser::TimeoutError
+        puts 'Connection timed out. Wrong host?'
         exit
       end
     end
