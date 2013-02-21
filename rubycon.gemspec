@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Rubycon::VERSION
   gem.authors       = ["nTraum"]
   gem.email         = ["philipp.press@googlemail.com"]
-  gem.description   = "fdkvdbvdjkbjkd"
-  gem.summary       = "dfbdklbklbklkl"
+  gem.description   = "A fully featured and convenient RCON CLI / console to manage your Source dedicated gameserver."
+  gem.summary       = "A fully featured and convenient RCON CLI / console to manage your Source dedicated gameserver."
   gem.homepage      = "http://github.com/nTraum/rubycon"
 
   gem.files         = `git ls-files`.split($/)
