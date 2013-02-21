@@ -29,7 +29,7 @@ module Rubycon
     def ask_for_port
       @port = ask('Port: ', Integer) do |q|
         q.default = 27015
-        q.in = 0..9999999
+        q.above = 0
       end
     end
 
@@ -44,7 +44,6 @@ module Rubycon
         puts "'#{@host}' not found. Wrong host?"
         exit
       end
-
     end
 
     def auth_if_necessary
