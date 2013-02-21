@@ -1,5 +1,6 @@
-require "rubycon/version"
+require 'rubycon/version'
+require 'rubycon/console'
 
-module Rubycon
+#module Rubycon
   # Your code goes here...
-end
+#end
