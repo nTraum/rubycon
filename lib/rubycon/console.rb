@@ -72,7 +72,7 @@ module Rubycon
       Readline.completion_proc = comp
 
       while line = readline_with_history
-        puts rcon_exec(line) if line
+        puts rcon_exec(line) unless line.empty?
       end
     end
 
