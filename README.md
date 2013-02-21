@@ -4,9 +4,8 @@ A fully featured and convenient rcon CLI to manage your Source Dedicated Gameser
 This program is not stable. Use at your own risk.
 
 Features:
- * Autocompletion of commands
- * foo
- * bar
+ * Auto completion for server cvars
+ * Auto completion for map names when using `changelevel`
 
 ## Installation
 
