@@ -1,6 +1,12 @@
 # Rubycon
 
-TODO: Write a gem description
+A fully featured and convenient RCON CLI / console to manage your Source dedicated gameserver.
+This program is not stable. Use on your own risk.
+
+Features:
+ * Autocompletion of commands
+ * foo
+ * bar
 
 ## Installation
 
@@ -18,7 +24,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ rubycon
 
 ## Contributing
 
