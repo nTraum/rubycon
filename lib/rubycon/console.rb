@@ -69,6 +69,7 @@ module Rubycon
       commands += create_changelevel_commands
       comp = proc { |s| commands.grep( /^#{Regexp.escape(s)}/ ) }
       Readline.completion_append_character = ''
+      Readline.basic_word_break_characters = ''
       Readline.completion_proc = comp
 
       while line = readline_with_history
