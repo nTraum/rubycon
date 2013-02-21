@@ -8,12 +8,16 @@ module Rubycon
     attr_accessor :host, :port, :rcon, :server, :commands
 
     def initialize(host = nil, port = nil, rcon = nil)
-      @host = host || ask_for_host
-      @port = port || ask_for_port
-      @rcon = rcon || ask_for_rcon
-      @commands = []
+      begin
+        @host = host || ask_for_host
+        @port = port || ask_for_port
+        @rcon = rcon || ask_for_rcon
+      rescue EOFError, Interrupt
+        exit
+      end
 
       @server = create_server
+      @commands = []
       setup_autocompletion_items
       run_console
     end
@@ -71,8 +75,15 @@ module Rubycon
       Readline.basic_word_break_characters = ''
       Readline.completion_proc = comp
 
-      while line = readline_with_history
-        puts rcon_exec(line) unless line.empty?
+      stty_save = `stty -g`.chomp
+
+      begin
+        while line = readline_with_history
+          puts rcon_exec(line) unless line.empty?
+        end
+      rescue Interrupt
+        system('stty', stty_save)
+        exit
       end
     end
 
