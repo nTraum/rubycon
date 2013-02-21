@@ -5,15 +5,16 @@ require 'highline/import'
 module Rubycon
   class Console
 
-    attr_accessor :host, :port, :rcon, :server
+    attr_accessor :host, :port, :rcon, :server, :commands
 
     def initialize(host = nil, port = nil, rcon = nil)
       @host = host || ask_for_host
       @port = port || ask_for_port
       @rcon = rcon || ask_for_rcon
-
+      @commands = []
 
       @server = create_server
+      setup_autocompletion_items
       run_console
     end
 
@@ -43,32 +44,30 @@ module Rubycon
       @server.rcon_exec(line)
     end
 
-    def cvars_from_server
-      cvars = []
-      rcon_exec('cvarlist').each_line do |l|
-        if l =~ /.*:.*:.*:.*/
-          cvars << (l.split).first
-        end
-      end
-      cvars
+    def setup_autocompletion_items
+      add_cvars_from_server
+      add_changelevel_commands
     end
 
-    def create_changelevel_commands
-      maps = []
-      rcon_exec('maps *').each_line do |l|
-        if l =~ /PENDING.*/
-          maps << "changelevel #{((l.split).last).sub('.bsp', '')}"
+    def add_cvars_from_server
+      rcon_exec('cvarlist').each_line do |l|
+        if l =~ /.*:.*:.*:.*/
+          @commands << (l.split).first
         end
       end
-      maps
+    end
+
+    def add_changelevel_commands
+      rcon_exec('maps *').each_line do |l|
+        if l =~ /PENDING.*/
+          @commands << "changelevel #{((l.split).last).sub('.bsp', '')}"
+        end
+      end
     end
 
     def run_console
-      commands = []
-      commands += cvars_from_server
-      commands += create_changelevel_commands
       comp = proc { |s| commands.grep( /^#{Regexp.escape(s)}/ ) }
-      Readline.completion_append_character = ''
+      Readline.completion_append_character = ' '
       Readline.basic_word_break_characters = ''
       Readline.completion_proc = comp
 
