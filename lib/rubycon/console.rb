@@ -41,11 +41,20 @@ module Rubycon
       SourceServer.new(@host, @port)
     end
 
-    def rcon_exec(line)
+    def auth_if_necessary
       unless @server.rcon_authenticated?
         @server.rcon_auth(@rcon)
       end
-      @server.rcon_exec(line)
+    end
+
+    def rcon_exec(line)
+      auth_if_necessary
+      begin
+        @server.rcon_exec(line)
+      rescue RCONNoAuthError
+        puts 'Could not authenticate with gameserver. Wrong rcon password?'
+        exit
+      end
     end
 
     def setup_autocompletion_items
