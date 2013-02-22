@@ -23,13 +23,20 @@ module Rubycon
     end
 
     def ask_for_host
-      @host = ask('Host: ') { |q| q.default = 'localhost' }
+      @host = ask('Host: ') do |q|
+        q.validate = /\S+/
+        q.responses[:ask_on_error] = :question
+        q.responses[:not_valid] = 'Invalid host specification.'
+      end
     end
 
     def ask_for_port
       @port = ask('Port: ', Integer) do |q|
         q.default = 27015
         q.above = 0
+        q.responses[:ask_on_error] = :question
+        q.responses[:not_valid] = 'Invalid port specification.'
+        q.responses[:invalid_type] = 'Invalid port specification.'
       end
     end
 
