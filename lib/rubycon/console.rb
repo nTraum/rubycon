@@ -18,7 +18,7 @@ module Rubycon
 
       @server = create_server
       @commands = []
-      setup_autocompletion_items
+      setup_autocompletion
       run_console
     end
 
@@ -75,7 +75,7 @@ module Rubycon
       end
     end
 
-    def setup_autocompletion_items
+    def setup_autocompletion
       add_cvars_from_server
       add_changelevel_commands
     end
