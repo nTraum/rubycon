@@ -1,0 +1,94 @@
+#!/usr/bin/env ruby
+require 'gli'
+require 'rubycon'
+include GLI::App
+
+program_desc 'CLI to manage your Source dedicated game servers.'
+version Rubycon::VERSION
+
+desc 'Prints debugging messages'
+switch [:v,:verbose]
+
+flag [:c,:config], :default_value => File.join(ENV['HOME'],'.rubycon.yml')
+
+pre do |global_options,command,options,args|
+  unless File.exists?(global_options[:config])
+
+    File.new(global_options[:config], 'w')
+  end
+
+end
+
+desc 'manages servers'
+command :server do |s|
+  s.desc 'adds a new gserver'
+  s.arg_name 'ALIAS'
+  s.command :add do |c|
+    c.desc 'hostname or IP'
+    c.arg_name 'HOSTNAME'
+    c.flag [:a, :address]
+
+    c.desc 'Port'
+    c.arg_name 'PORT', :optional
+    c.default_value 27015
+    c.flag [:p, :port]
+
+    c.desc 'Rcon password'
+    c.arg_name 'RCON'
+    c.flag [:r, :rcon]
+    c.action do |global_options,options,args|
+      exit_now!('ALIAS is required') if args.empty?
+      exit_now!('HOSTNAME is required') unless options[:address]
+      exit_now!('RCON is required') unless options[:rcon]
+    end
+  end
+
+  #arg_name 'Describe arguments to rm here'
+  s.desc 'deletes an existing server'
+  s.command :rm do |c|
+    c.action do |global_options,options,args|
+      puts "rm command ran"
+    end
+  end
+
+  #arg_name 'Describe arguments to list here'
+  s.desc 'lists all servers'
+  s.command :list do |c|
+    c.action do |global_options,options,args|
+      puts "list command ran"
+    end
+  end
+
+  arg_name 'Describe arguments to console here'
+  s.desc 'starts a rcon session to a server'
+  s.command :console do |c|
+    c.action do |global_options,options,args|
+      puts "console command ran"
+    end
+  end
+
+  s.default_command :list
+end
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abort and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit run(ARGV)
