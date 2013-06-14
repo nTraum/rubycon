@@ -9,6 +9,7 @@ version Rubycon::VERSION
 desc 'Prints debugging messages'
 switch [:v,:verbose]
 
+desc 'Configuration file'
 flag [:c,:config], :default_value => File.join(ENV['HOME'],'.rubycon.yml')
 
 pre do |global_options,command,options,args|
