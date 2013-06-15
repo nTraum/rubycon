@@ -4,63 +4,16 @@ Rubycon is a CLI for managing Source dedicated game servers (TF2, CS:S...). Thin
 
 # Installation
 
+Rubycon was written in Ruby, make sure you have at least 1.9.3 installed (`ruby -v`).
+
 `$ gem install rubycon`
 
 # Usage
 
-Rubycon offers help on the terminal.
-`$ rubycon help`
-`$ rubycon add help`
-`$ rubycon console help` etc...
+`$ rubycon add youralias --address=127.0.0.1 --rcon=foobar` adds a new game server. If you want to specify a non-default port (27015), add `--port 54321` to the command.
 
-## Adding
+`$ rubycon list` lists all your game servers.
 
-Start off by telling your rubycon about your game server.
+`$ rubycon console youralias` starts a rcon session to a server. It supports auto completion too!
 
-```
-$ rubycon add ETF2L_DE_1 --address=212.83.57.144 --rcon=foobar
-```
-
-## Listing
-
-You can get a nice overview of all your servers by using the `list` command.
-
-```
-$ rubycon list
-
-┏━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━┓
-┃ Alias       ┃ Name                      ┃                Map ┃  Players ┃ Ping ┃
-┣━━━━━━━━━━━━━╊━━━━━━━━━━━━━━━━━━━━━━━━━━━╊━━━━━━━━━━━━━━━━━━━━╊━━━━━━━━━━╊━━━━━━┫
-┃ ETF2L_DE_1  ┃ ETF2L.org Server DE #1 b  ┃  cp_gullywash_fina ┃     0/20 ┃  127 ┃
-┗━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━┻━━━━━━┛
-
-```
-
-## Starting a RCON session
-
-Hop into a rcon session with the `console` command. It offers auto completion too!
-
-```
-$ rubycon console ETF2L_DE_1
-Use CTRL+D to exit.
-> status
-hostname: ETF2L.org Server DE #1 by Hypernia.com
-version : 1797820/24 5331 secure
-udp/ip  : 212.83.57.144:27015  (public ip: 212.83.57.144)
-account : not logged in  (No account specified)
-map     : cp_gullywash_final1 at: 0 x, 0 y, 0 z
-sourcetv:  port 27020, delay 90.0s
-players : 1 (21 max)
-
-# userid name                uniqueid            connected ping loss state  adr
-#      2 "SourceTV"          BOT                                     active
->
-```
-
-## Deleting
-
-Deletes servers from your list.
-
-```
-$ rubycon rm ETF2L_DE_1
-```
+`$ rubycon rm youralias` will remove a server from the list.
