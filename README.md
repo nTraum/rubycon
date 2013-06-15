@@ -1,12 +1,17 @@
 # Rubycon
 
-Rubycon is a CLI for managing Source dedicated game servers (TF2, CS:S...). Think of it as a [http://www.hlsw.org](HLSW) clone, but terminal-based.
+Rubycon is a CLI for managing Source dedicated game servers (TF2, CS:S...). Think of it as a [HSLW](http://www.hlsw.org) clone, but terminal-based.
 
 # Installation
 
-TODO
+`$ gem install rubycon`
 
 # Usage
+
+Rubycon offers help on the terminal.
+`$ rubycon help`
+`$ rubycon add help`
+`$ rubycon console help` etc...
 
 ## Adding
 
@@ -57,5 +62,5 @@ players : 1 (21 max)
 Deletes servers from your list.
 
 ```
-$rubycon rm ETF2L_DE_1
+$ rubycon rm ETF2L_DE_1
 ```
