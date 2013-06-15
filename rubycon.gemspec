@@ -8,11 +8,13 @@ spec = Gem::Specification.new do |s|
   s.homepage = 'https://github.com/nTraum/rubycon'
   s.platform = Gem::Platform::RUBY
   s.summary = 'CLI to manage your Source dedicated game servers.'
-# Add your other files here if you make them
   s.files = %w(
 bin/rubycon
+lib/rubycon/config.rb
+lib/rubycon/server.rb
 lib/rubycon/version.rb
 lib/rubycon.rb
+
   )
   s.require_paths << 'lib'
   s.has_rdoc = true
