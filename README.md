@@ -6,9 +6,9 @@ Rubycon is a CLI for managing Source dedicated game servers (TF2, CS:S...). Thin
 
 TODO
 
-## Usage
+# Usage
 
-### Adding
+## Adding
 
 Start off by telling your rubycon about your game server.
 
@@ -16,7 +16,7 @@ Start off by telling your rubycon about your game server.
 $ rubycon add ETF2L_DE_1 --address=212.83.57.144 --rcon=foobar
 ```
 
-### Listing
+## Listing
 
 You can get a nice overview of all your servers by using the `list` command.
 
@@ -31,7 +31,7 @@ $ rubycon list
 
 ```
 
-### Starting a RCON session
+## Starting a RCON session
 
 Hop into a rcon session with the `console` command. It offers auto completion too!
 
@@ -52,7 +52,7 @@ players : 1 (21 max)
 >
 ```
 
-### Deleting
+## Deleting
 
 Deletes servers from your list.
 
