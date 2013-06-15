@@ -10,6 +10,7 @@ program_desc 'CLI to manage your Source dedicated game servers.'
 version Rubycon::VERSION
 
 desc 'Prints debugging messages'
+<<<<<<< HEAD
 switch [:v, :verbose]
 flag [:c, :config], :default_value => File.join(ENV['HOME'],'.rubycon.yml')
 
