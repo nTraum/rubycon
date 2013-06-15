@@ -4,7 +4,7 @@ Rubycon is a CLI for managing Source dedicated game servers (TF2, CS:S...). Thin
 
 # Installation
 
-TODO
+`$ gem install rubycon`
 
 # Usage
 
@@ -57,5 +57,5 @@ players : 1 (21 max)
 Deletes servers from your list.
 
 ```
-$rubycon rm ETF2L_DE_1
+$ rubycon rm ETF2L_DE_1
 ```
