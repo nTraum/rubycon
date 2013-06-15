@@ -1,3 +1,6 @@
-require 'rubycon/version.rb'
-require 'rubycon/server.rb'
+require 'command_line_reporter'
 require 'rubycon/config.rb'
+require 'rubycon/rcon_session.rb'
+require 'rubycon/server.rb'
+require 'rubycon/server_info.rb'
+require 'rubycon/version.rb'

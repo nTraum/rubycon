@@ -6,73 +6,101 @@ rescue LoadError
   exit 64
 end
 include GLI::App
+include CommandLineReporter
+
 program_desc 'CLI to manage your Source dedicated game servers.'
 version Rubycon::VERSION
 
-desc 'Prints debugging messages'
-switch [:v, :verbose]
-flag [:c, :config], :default_value => File.join(ENV['HOME'],'.rubycon.yml')
+switch [:v, :verbose],  :negatable => false,
+                        :desc => 'Prints debugging messages'
 
-desc 'adds a new gserver'
-arg_name 'ALIAS'
+flag [:c, :config],     :default_value => File.join(ENV['HOME'],'.rubycon.yml'),
+                        :desc => 'Path to configuration file'
+
+desc 'adds a new server'
+arg_name 'ALIAS', :optional
 command :add do |c|
-  c.desc 'hostname or IP'
-  c.arg_name 'HOSTNAME'
-  c.flag [:a, :address]
+  c.flag  [:a, :address], :arg_name => 'HOSTNAME',
+                          :desc => 'hostname or IP'
 
-  c.desc 'Port'
-  c.arg_name 'PORT', :optional
-  c.default_value 27015
-  c.flag [:p, :port]
+  c.flag [:p, :port],     :default_value => 27015,
+                          :arg_name =>  'PORT',
+                          :desc => 'Port',
+                          :type => Integer
 
-  c.desc 'Rcon password'
-  c.arg_name 'RCON'
-  c.flag [:r, :rcon]
+  c.flag [:r, :rcon],     :arg_name => 'RCON',
+                          :desc => 'Rcon password'
+
   c.action do |global_options,options,args|
     exit_now!('ALIAS is required') if args.empty?
     exit_now!('HOSTNAME is required') unless options[:address]
     exit_now!('RCON is required') unless options[:rcon]
+
+    s = Rubycon::Server.new(args.first, options[:address], options[:port], options[:rcon])
+    $config.add_server s
   end
 end
 
-#arg_name 'Describe arguments to rm here'
 desc 'deletes an existing server'
+arg_name 'ALIAS', :multiple
 command :rm do |c|
+  c. switch [:a, :all], :negatable => false,
+                        :desc => 'Deletes all servers'
+
   c.action do |global_options,options,args|
-    puts "rm command ran"
+    $config.delete_server args.first
   end
 end
 
-#arg_name 'Describe arguments to list here'
 desc 'lists all servers'
 command :list do |c|
   c.action do |global_options,options,args|
-    puts "list command ran"
+    alias_width = 11
+    server_width = 25
+    map_width = 18
+    players_width = 8
+    ping_width = 4
+
+    table(:border => true) do
+      row :header => true do
+       column('Alias', :width => alias_width)
+       column('Name', :width => server_width)
+       column('Map', :align => 'right', :width => map_width)
+       column('Players', :align => 'right', :width => players_width)
+       column('Ping', :align => 'right', :width => ping_width)
+     end
+     $config.servers.each do |s|
+      info = Rubycon::ServerInfo.new s
+      row do
+        column s.name.slice(0..alias_width - 2)
+        column info.name.slice(0..server_width - 2)
+        column info.map.slice(0..map_width - 2)
+        column "#{info.players_count}/#{info.players_max}"
+        column info.ping
+      end
+     end
+    end
   end
 end
 
-arg_name 'Describe arguments to console here'
 desc 'starts a rcon session to a server'
+arg_name 'ALIAS'
 command :console do |c|
   c.action do |global_options,options,args|
-    puts "console command ran"
+    exit_now!('ALIAS is required') if args.empty?
+    server = $config.find_by_name args.first
+    puts 'Use CTRL+D to exit.'
+    Rubycon::RconSession.start server
   end
 end
 
 pre do |global,command,options,args|
-  $config = Rubycon::Config.new(global[:c])
-  puts config.inspect
-end
-
-post do |global,command,options,args|
-  # Post logic here
-  # Use skips_post before a command to skip this
-  # block on that command only
+  $config = Rubycon::Config.load(global[:c])
 end
 
 on_error do |exception|
-  # Error logic here
-  # return false to skip default error handling
+# puts exception.inspect
+# puts exception.backtrace
   true
 end
 

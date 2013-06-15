@@ -10,21 +10,25 @@ spec = Gem::Specification.new do |s|
   s.summary = 'CLI to manage your Source dedicated game servers.'
   s.files = %w(
 bin/rubycon
-lib/rubycon/config.rb
-lib/rubycon/server.rb
-lib/rubycon/version.rb
 lib/rubycon.rb
-
+lib/rubycon/config.rb
+lib/rubycon/rcon_session.rb
+lib/rubycon/server.rb
+lib/rubycon/server_info.rb
+lib/rubycon/version.rb
   )
+
   s.require_paths << 'lib'
   s.has_rdoc = true
   s.extra_rdoc_files = ['README.rdoc','rubycon.rdoc']
   s.rdoc_options << '--title' << 'rubycon' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'rubycon'
+  s.add_development_dependency('aruba')
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
-  s.add_development_dependency('aruba')
   s.add_runtime_dependency('gli','2.5.6')
+  s.add_runtime_dependency('highline')
   s.add_runtime_dependency('steam-condenser')
+  s.add_runtime_dependency('command_line_reporter')
 end
