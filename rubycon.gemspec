@@ -19,9 +19,6 @@ lib/rubycon/version.rb
   )
 
   s.require_paths << 'lib'
-  s.has_rdoc = true
-  s.extra_rdoc_files = ['README.rdoc','rubycon.rdoc']
-  s.rdoc_options << '--title' << 'rubycon' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'rubycon'
   s.add_development_dependency('aruba')
