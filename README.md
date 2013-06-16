@@ -4,7 +4,13 @@ Rubycon is a CLI for managing Source dedicated game servers (TF2, CS:S...). Thin
 
 # Installation
 
-Rubycon was written in Ruby, make sure you have at least 1.9.3 installed (`ruby -v`).
+Rubycon was written in Ruby, Version 1.9.3 is minimum to run rubycon. (`ruby -v`).
+Make sure to have the following libraries installed:
+
+* RHEL based:   `yum install readline-devel bzip2-devel`
+* Debian based: `apt-get install libreadline-dev libbz2-dev`
+
+Install rubycon with the following command:
 
 `$ gem install rubycon`
 
