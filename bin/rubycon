@@ -1,5 +1,174 @@
 #!/usr/bin/env ruby
-
+require 'gli'
+begin
 require 'rubycon'
+rescue LoadError => e
+  puts e.inspect
+  puts e.backtrace
+  exit 64
+end
+include GLI::App
 
-Rubycon::Console.new
+program_desc 'CLI to manage your Source dedicated game servers.'
+version Rubycon::VERSION
+
+flag [:c, :config], :default_value => File.join(ENV['HOME'], '.config', 'rubycon', 'rubycon.yml'),
+                    :desc => 'Path to configuration file'
+
+desc 'adds a new server'
+arg_name 'ALIAS'
+command :add do |c|
+  c.flag  [:a, :address], :arg_name => 'HOSTNAME',
+                          :desc => 'hostname or IP'
+
+  c.flag [:p, :port],     :default_value => 27015,
+                          :arg_name =>  'PORT',
+                          :desc => 'Port',
+                          :type => Integer
+
+  c.flag [:r, :rcon],     :arg_name => 'RCON',
+                          :desc => 'Rcon password'
+
+  c.action do |g, o, args|
+    exit_now!('ALIAS is required') if args.empty?
+    exit_now!('HOSTNAME is required') unless o[:address]
+    exit_now!('RCON is required') unless o[:rcon]
+    exit_now!("ALIAS #{args.first}` already used") if $config.find_by_name args.first
+    s = Rubycon::Server.new(args.first, o[:a], o[:p], o[:r])
+    $config.add_server s
+  end
+end
+
+desc 'deletes the specified server'
+arg_name 'ALIAS'
+command :rm do |c|
+  c. switch [:a, :all], :negatable => false,
+                        :desc => 'Deletes all servers'
+
+  c.action do |g, o, args|
+    if o[:a]
+     $config.delete_all_servers
+    else
+      exit_now!('ALIAS is required') if args.empty?
+      exit_now!("Unknown server alias: #{args.first}") unless $config.delete_server args.first
+    end
+  end
+end
+
+desc 'lists all servers'
+command :list do |c|
+  c.flag [:s, :spacing],  :default_value => 8,
+                        :desc => 'Amount of whitespace between the columns',
+                        :type => Integer
+  c.action do |g, o, args|
+    exit_now!('No servers added yet. Use `rubycon add` to add a new server.') if $config.servers.empty?
+
+    server_infos = Parallel.map($config.servers, :in_threads => $config.servers.size) do |s|
+      Rubycon::ServerInfo.new s
+    end
+    server_infos.select!{|i| i.reachable?}
+    name_max_width = ($config.servers.map {|s| s.name.length}).max
+    map_max_width = (server_infos.map{|i| i.map.length}).max
+    players_max_width = (server_infos.map{|i| "#{i.players_count}/#{i.players_max}".length}).max
+    ping_max_width = (server_infos.map{|i|  i.ping.to_s.length}).max
+
+    puts "Server".ljust(name_max_width).bold + "Map".rjust(map_max_width + o[:s]).bold +
+            "Players".rjust(players_max_width + o[:s]).bold +
+            "Ping".rjust(ping_max_width + o[:s]).bold
+
+    $config.servers.zip(server_infos).each do |s, i|
+      if i.nil?
+        puts s.name.ljust(name_max_width).yellow + '?'.rjust(map_max_width + o[:s]).yellow +
+            '?/?'.rjust(players_max_width + o[:s]).yellow +
+            '?'.rjust(ping_max_width + o[:s]).yellow
+      else
+        puts s.name.ljust(name_max_width) + i.map.rjust(map_max_width + o[:s]) +
+            "#{i.players_count}/#{i.players_max}".rjust(players_max_width + o[:s]) +
+            i.ping.to_s.rjust(ping_max_width + o[:s])
+        end
+    end
+  end
+end
+
+desc 'starts a rcon session to the specified server'
+arg_name 'ALIAS'
+command :console do |c|
+  c.action do |g, o, args|
+    exit_now!('ALIAS is required') if args.empty?
+    server = $config.find_by_name args.first
+    exit_now!("Unknown server alias: #{args.first}") if server.nil?
+    puts 'Use CTRL+D to exit.'
+    Rubycon::RconSession.new server
+  end
+end
+
+desc 'executes a rcon command on specified server(s)'
+arg_name 'ALIAS[ ALIAS]*'
+command :execute do |c|
+  c. switch [:a, :all],   :negatable => false,
+                          :desc => 'Executes rcon command on all servers'
+  c.flag [:i, :command],  :arg_name => 'COMMAND',
+                          :desc => 'Rcon command'
+  c.action do |g, o, args|
+    exit_now!('COMMAND required') unless o[:i]
+    if o[:a]
+      servers = $config.servers
+    else
+      servers = []
+      exit_now!('ALIAS is required') if args.empty?
+      args.each do |arg|
+        server = $config.find_by_name arg
+        exit_now!("Unknown server alias: #{arg}") unless server
+        servers << server
+      end
+    end
+
+    responses = {}
+    Parallel.each(servers, :in_threads => servers.size) do |server|
+      executor = Rubycon::RconExecutor.new server, o[:i]
+      responses[server.name] = executor.response
+    end
+
+    responses.each_pair do |name, response|
+      puts "#{name.bold}:"
+      puts response
+      puts "---------------------------------"
+    end
+  end
+end
+
+desc 'starts the game client and connects to the specified server'
+arg_name 'ALIAS'
+command :connect do |c|
+  c.action do |g, o, args|
+    exit_now!('ALIAS is required') if args.empty?
+
+    server = $config.find_by_name args.first
+    exit_now!("Unknown server alias: #{args.first}") if server.nil?
+    uri = "steam://connect/#{server.address}:#{server.port}"
+
+    case RbConfig::CONFIG['host_os']
+      when /mswin|mingw|cygwin/
+        system "start #{uri}"
+      when /darwin/
+        system "open #{uri}"
+      when /linux|bsd/
+        system "xdg-open #{uri}"
+      else
+        exit_now! 'Cannot connect to server. Couldn\'t identify your OS.'
+    end
+  end
+end
+
+pre do |g, command, o, args|
+  $config = Rubycon::Config.load(g[:c])
+  true
+end
+
+on_error do |e|
+  # puts e.inspect
+  # puts e.backtrace
+  true
+end
+
+exit run(ARGV)

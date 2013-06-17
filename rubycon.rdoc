@@ -1,0 +1,5 @@
+= rubycon
+
+Generate this with
+    rubycon rdoc
+After you have described your command line interface
