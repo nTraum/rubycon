@@ -1,49 +1,52 @@
-require 'steam-condenser'
-require 'readline'
 module Rubycon
   class RconSession
+    def initialize(server_info)
+      @commands = []
+      @server_info = server_info
+      @session = SourceServer.new @server_info.address, @server_info.port
 
-
-    def self.start(server_info)
-      @@commands = []
-      @@server_info = server_info
-      @@session = SourceServer.new server_info.address, server_info.port
-
-      self.setup_autocompletion_items
-      self.run_console
+      setup_autocompletion_items
+      run_console
     end
 
-    def self.setup_autocompletion_items
-      self.add_cvars_from_server
-      self.add_changelevel_commands
+    private
+
+    def reconnect
+      @session = SourceServer.new @server_info.address, @server_info.port
+      setup_autocompletion_items
     end
 
-    def self.add_cvars_from_server
-      self.rcon_exec('cvarlist').each_line do |l|
+    def setup_autocompletion_items
+      add_cvars_from_server
+      add_changelevel_commands
+    end
+
+    def add_cvars_from_server
+      rcon_exec('cvarlist').each_line do |l|
         if l =~ /.*:.*:.*:.*/
-          @@commands << (l.split).first
+          @commands << (l.split).first
         end
       end
     end
 
-    def self.add_changelevel_commands
-      self.rcon_exec('maps *').each_line do |l|
+    def add_changelevel_commands
+      rcon_exec('maps *').each_line do |l|
         if l =~ /PENDING.*/
-          @@commands << "changelevel #{((l.split).last).sub('.bsp', '')}"
+          @commands << "changelevel #{((l.split).last).sub('.bsp', '')}"
         end
       end
     end
 
-    def self.auth_if_necessary
-      unless @@session.rcon_authenticated?
-        @@session.rcon_auth(@@server_info.rcon)
+    def auth_if_necessary
+      unless @session.rcon_authenticated?
+        @session.rcon_auth(@server_info.rcon)
       end
     end
 
-    def self.rcon_exec(line)
+    def rcon_exec(line)
       begin
         auth_if_necessary
-        @@session.rcon_exec(line)
+        @session.rcon_exec(line)
       rescue RCONNoAuthError
         puts 'Could not authenticate with gameserver. Wrong rcon password?'
         exit
@@ -51,13 +54,13 @@ module Rubycon
         puts 'Connection refused. Wrong host?'
         exit
       rescue SteamCondenser::TimeoutError
-        puts 'Connection timed out. Wrong host?'
-        exit
+        puts '---Connection timed out while sending command!'
+        reconnect
       end
     end
 
-    def self.run_console
-      comp = proc { |s| @@commands.grep( /^#{Regexp.escape(s)}/ ) }
+    def run_console
+      comp = proc { |s| @commands.grep( /^#{Regexp.escape(s)}/ ) }
       Readline.completion_append_character = ' '
       Readline.basic_word_break_characters = ''
       Readline.completion_proc = comp
@@ -69,11 +72,11 @@ module Rubycon
         end
       rescue Interrupt
         system('stty', stty_save)
-        @@session.disconnect
+        @session.disconnect
       end
     end
 
-    def self.readline_with_history
+    def readline_with_history
       line = Readline.readline("> ", true)
       return nil if line.nil?
       if line =~ /^\s*$/ or Readline::HISTORY.to_a[-2] == line

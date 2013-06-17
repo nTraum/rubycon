@@ -8,15 +8,7 @@ spec = Gem::Specification.new do |s|
   s.homepage = 'https://github.com/nTraum/rubycon'
   s.platform = Gem::Platform::RUBY
   s.summary = 'CLI to manage your Source dedicated game servers.'
-  s.files = %w(
-bin/rubycon
-lib/rubycon.rb
-lib/rubycon/config.rb
-lib/rubycon/rcon_session.rb
-lib/rubycon/server.rb
-lib/rubycon/server_info.rb
-lib/rubycon/version.rb
-  )
+  s.files = `git ls-files`.split($/)
 
   s.require_paths << 'lib'
   s.bindir = 'bin'
@@ -27,5 +19,6 @@ lib/rubycon/version.rb
   s.add_runtime_dependency('gli','2.5.6')
   s.add_runtime_dependency('highline')
   s.add_runtime_dependency('steam-condenser')
-  s.add_runtime_dependency('command_line_reporter')
+  s.add_runtime_dependency('colored')
+  s.add_runtime_dependency('parallel')
 end

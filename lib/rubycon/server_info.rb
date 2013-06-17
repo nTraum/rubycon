@@ -1,4 +1,3 @@
-require 'steam-condenser'
 module Rubycon
   class ServerInfo
     attr_reader :map, :players_count, :players_max, :ping, :name
@@ -11,9 +10,14 @@ module Rubycon
         @players_max = conn.server_info[:max_players]
         @map = conn.server_info[:map_name]
         @name = conn.server_info[:server_name]
+        @reachable = true
       rescue
-        @ping = @players_max = @players_count = @map = @name = '?'
+        @reachable = false
       end
+    end
+
+    def reachable?
+      @reachable
     end
   end
 end
