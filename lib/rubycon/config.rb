@@ -1,7 +1,6 @@
 module Rubycon
   class Config
-    attr_reader   :path, :servers
-    attr_accessor
+    attr_reader :path, :servers
 
     def initialize(path)
       @servers = []
