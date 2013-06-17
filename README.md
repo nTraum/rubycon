@@ -1,6 +1,6 @@
 Rubycon is a CLI for managing Source dedicated game servers (TF2, CS:S...). Think of it as a [HSLW](http://www.hlsw.org) clone, but terminal-based.
 
-![Screenshot](http://i.imgur.com/cto9CnT.png)
+![Screenshot](http://i.imgur.com/k8q3zXO.png)
 
 Features:
 
