@@ -9,7 +9,7 @@ rescue LoadError => e
 end
 include GLI::App
 
-program_desc 'CLI to manage your Source dedicated game servers.'
+program_desc 'CLI to manage your Source dedicated game servers'
 version Rubycon::VERSION
 
 flag [:c, :config], :default_value => File.join(ENV['HOME'], '.config', 'rubycon', 'rubycon.yml'),
@@ -34,6 +34,8 @@ command :add do |c|
     exit_now!('HOSTNAME is required') unless o[:address]
     exit_now!('RCON is required') unless o[:rcon]
     exit_now!("ALIAS #{args.first}` already used") if $config.find_by_name args.first
+    exit_now!("Server #{o[:a]}:#{o[:p]} already added") if $config.find_by_host_and_port o[:a], o[:p]
+
     s = Rubycon::Server.new(args.first, o[:a], o[:p], o[:r])
     $config.add_server s
   end
@@ -67,7 +69,7 @@ command :list do |c|
                           :desc => 'Amount of whitespace between the columns',
                           :type => Integer
   c.action do |g, o, args|
-    exit_now!('No servers added yet. Use `rubycon add` to add a new server.') if $config.servers.empty?
+    exit_now!('No servers added yet. Use `rubycon add` to add a new server') if $config.servers.empty?
 
     server_infos = Parallel.map($config.servers, :in_threads => $config.servers.size) do |s|
       Rubycon::ServerInfo.new s
@@ -103,7 +105,7 @@ command :console do |c|
     exit_now!('ALIAS is required') if args.empty?
     server = $config.find_by_name args.first
     exit_now!("Unknown server alias: #{args.first}") if server.nil?
-    puts 'Use CTRL+D to exit.'
+    puts 'Use CTRL+D to exit'
     Rubycon::RconSession.new server
   end
 end
@@ -163,7 +165,7 @@ command :connect do |c|
       when /linux|bsd/
         system "xdg-open #{uri}"
       else
-        exit_now! 'Cannot connect to server. Couldn\'t identify your OS.'
+        exit_now! 'Cannot connect to server. Couldn\'t identify your OS'
     end
   end
 end

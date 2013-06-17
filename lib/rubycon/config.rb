@@ -46,5 +46,9 @@ module Rubycon
     def find_by_name(name)
       @servers.find {|server| name.downcase == server.name.downcase}
     end
+
+    def find_by_host_and_port(address, port)
+      @servers.find {|server| port == server.port and server.address.downcase == address.downcase}
+    end
   end
 end
