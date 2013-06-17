@@ -2,6 +2,7 @@
 require File.join([File.dirname(__FILE__),'lib','rubycon','version.rb'])
 spec = Gem::Specification.new do |s|
   s.name = 'rubycon'
+  s.license = 'MIT'
   s.version = Rubycon::VERSION
   s.author = 'Philipp Preß'
   s.email = 'philipp.press@googlemail.com'
