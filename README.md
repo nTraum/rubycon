@@ -1,5 +1,7 @@
 Rubycon is a CLI for managing Source dedicated game servers (TF2, CS:S...). Think of it as a [HSLW](http://www.hlsw.org) clone, but terminal-based.
 
+![Screenshot](http://i.imgur.com/cto9CnT.png)
+
 Features:
 
 * RCON session with auto completion
@@ -75,8 +77,8 @@ Need further help?
 
 # Contributing
 
-Fork it
-Create your feature branch (`git checkout -b my-new-feature`)
-Commit your changes (`git commit -am 'Add some feature'`)
-Push to the branch (`git push origin my-new-feature`)
-Create new Pull Request
+* Fork it
+* Create your feature branch (`git checkout -b my-new-feature`)
+* Commit your changes (`git commit -am 'Add some feature'`)
+* Push to the branch (`git push origin my-new-feature`)
+* Create new Pull Request
