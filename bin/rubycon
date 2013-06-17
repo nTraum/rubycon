@@ -135,10 +135,12 @@ command :execute do |c|
       responses[server.name] = executor.response
     end
 
+    max_width = responses.each_value.map{|response|response.split(/\r?\n/).map{|line| line.length}.max}.max
     responses.each_pair do |name, response|
       puts "#{name.bold}:"
       puts response
-      puts "---------------------------------"
+      puts
+      puts "-" * max_width
     end
   end
 end
