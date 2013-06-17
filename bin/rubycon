@@ -18,7 +18,7 @@ flag [:c, :config], :default_value => File.join(ENV['HOME'], '.config', 'rubycon
 desc 'adds a new server'
 arg_name 'ALIAS'
 command :add do |c|
-  c.flag  [:a, :address], :arg_name => 'HOSTNAME',
+  c.flag [:a, :address],  :arg_name => 'HOSTNAME',
                           :desc => 'hostname or IP'
 
   c.flag [:p, :port],     :default_value => 27015,
@@ -47,7 +47,7 @@ command :rm do |c|
 
   c.action do |g, o, args|
     if o[:a]
-     $config.delete_all_servers
+      $config.delete_all_servers
     else
       exit_now!('ALIAS is required') if args.empty?
       exit_now!("Unknown server alias: #{args.first}") unless $config.delete_server args.first
@@ -58,8 +58,8 @@ end
 desc 'lists all servers'
 command :list do |c|
   c.flag [:s, :spacing],  :default_value => 8,
-                        :desc => 'Amount of whitespace between the columns',
-                        :type => Integer
+                          :desc => 'Amount of whitespace between the columns',
+                          :type => Integer
   c.action do |g, o, args|
     exit_now!('No servers added yet. Use `rubycon add` to add a new server.') if $config.servers.empty?
 
@@ -70,7 +70,7 @@ command :list do |c|
     name_max_width = ($config.servers.map {|s| s.name.length}).max
     map_max_width = (server_infos.map{|i| i.map.length}).max
     players_max_width = (server_infos.map{|i| "#{i.players_count}/#{i.players_max}".length}).max
-    ping_max_width = (server_infos.map{|i|  i.ping.to_s.length}).max
+    ping_max_width = (server_infos.map{|i| i.ping.to_s.length}).max
 
     puts "Server".ljust(name_max_width).bold + "Map".rjust(map_max_width + o[:s]).bold +
             "Players".rjust(players_max_width + o[:s]).bold +
@@ -85,7 +85,7 @@ command :list do |c|
         puts s.name.ljust(name_max_width) + i.map.rjust(map_max_width + o[:s]) +
             "#{i.players_count}/#{i.players_max}".rjust(players_max_width + o[:s]) +
             i.ping.to_s.rjust(ping_max_width + o[:s])
-        end
+      end
     end
   end
 end
