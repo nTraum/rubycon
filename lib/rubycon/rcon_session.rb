@@ -54,7 +54,7 @@ module Rubycon
         puts 'Connection refused. Wrong host?'
         exit
       rescue SteamCondenser::TimeoutError
-        puts '---Connection timed out while sending command!'
+        puts 'Connection timed out while sending command, reconnecting...'
         reconnect
       end
     end
