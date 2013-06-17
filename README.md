@@ -82,3 +82,7 @@ Need further help?
 * Commit your changes (`git commit -am 'Add some feature'`)
 * Push to the branch (`git push origin my-new-feature`)
 * Create new Pull Request
+
+# License
+
+rubycon is released under the [MIT](http://opensource.org/licenses/MIT) License.
