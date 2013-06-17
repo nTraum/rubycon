@@ -77,7 +77,7 @@ module Rubycon
     end
 
     def readline_with_history
-      line = Readline.readline("> ", true)
+      line = Readline.readline("#{@server_info.name}> ", true)
       return nil if line.nil?
       if line =~ /^\s*$/ or Readline::HISTORY.to_a[-2] == line
         Readline::HISTORY.pop
