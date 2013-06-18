@@ -83,6 +83,10 @@ Need further help?
 * Push to the branch (`git push origin my-new-feature`)
 * Create new Pull Request
 
+# Code Status
+
+* [![Dependency Status](https://gemnasium.com/nTraum/rubycon.png)](https://gemnasium.com/nTraum/rubycon)
+
 # License
 
 rubycon is released under the [MIT](http://opensource.org/licenses/MIT) License.
