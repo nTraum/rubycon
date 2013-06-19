@@ -8,9 +8,5 @@ module Rubycon
       @port = port
       @rcon = rcon
     end
-
-    def self.from_hash(hash)
-      Server.new(hash['name'], hash['address'], hash['port'], hash['rcon'])
-    end
   end
 end
