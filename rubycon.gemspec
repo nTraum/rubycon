@@ -11,6 +11,7 @@ spec = Gem::Specification.new do |s|
   s.summary = 'CLI to manage your Source dedicated game servers.'
   s.description = s.summary
   s.files = `git ls-files`.split($/)
+  s.test_files  = Dir.glob("{spec,test}/**/*.rb")
 
   s.require_paths << 'lib'
   s.bindir = 'bin'
