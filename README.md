@@ -6,9 +6,9 @@ Rubycon is a CLI for managing Source dedicated game servers (TF2, CS:S...). Thin
 
 Features:
 
-* RCON session with auto completion
+* RCON session with auto completion :exclamation:
 * Overview of all your servers
-* Bulk execution of rcon commands
+* Bulk execution of rcon commands :boom:
 * Start game client and join servers from the command line
 
 Follow this gem on [Twitter](https://twitter.com/rubycon_cli).
