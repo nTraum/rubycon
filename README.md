@@ -75,8 +75,8 @@ CPU    In (KB/s)  Out (KB/s)  Uptime  Map changes  FPS      Players  Connects
 
 Need further help?
 `$ rubycon help`
-`$ rubycon execute help`
-`$ rubycon rm help`
+`$ rubycon help execute`
+`$ rubycon help rm`
 ...
 
 # Contributing
