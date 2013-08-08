@@ -28,6 +28,7 @@ module Rubycon
     end
 
     def add_server(server)
+      raise ConfigError, "ALIAS #{server.name} already used." if find_by_name server.name
       @servers << server
       save
     end

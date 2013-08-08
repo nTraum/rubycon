@@ -30,14 +30,15 @@ command :add do |c|
                           :desc => 'Rcon password'
 
   c.action do |g, o, args|
-    exit_now!('ALIAS is required') if args.empty?
-    exit_now!('HOSTNAME is required') unless o[:address]
-    exit_now!('RCON is required') unless o[:rcon]
-    exit_now!("ALIAS #{args.first}` already used") if $config.find_by_name args.first
-    exit_now!("Server #{o[:a]}:#{o[:p]} already added") if $config.find_by_host_and_port o[:a], o[:p]
+    begin
+      s = Rubycon::Server.new(args.first, o[:a], o[:p], o[:r])
+      $config.add_server s
+      exit_now!("ALIAS #{args.first}` already used") if $config.find_by_name args.first
+      exit_now!("Server #{o[:a]}:#{o[:p]} already added") if $config.find_by_host_and_port o[:a], o[:p]
 
-    s = Rubycon::Server.new(args.first, o[:a], o[:p], o[:r])
-    $config.add_server s
+    rescue Rubycon::ServerError, Rubycon::ConfigError => e
+        puts e.message
+    end
   end
 end
 

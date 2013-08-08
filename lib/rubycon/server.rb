@@ -7,6 +7,11 @@ module Rubycon
       @address = address
       @port = port
       @rcon = rcon
+
+      raise ServerError, 'ALIAS is required.' unless @name
+      raise ServerError, 'HOSTNAME is required.' unless @address
+      raise ServerError, 'PORT is required.' unless @port
+      raise ServerError, 'RCON is required' unless @rcon
     end
   end
 end
