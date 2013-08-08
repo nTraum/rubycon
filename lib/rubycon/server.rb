@@ -8,8 +8,8 @@ module Rubycon
       @port = port
       @rcon = rcon
 
-      raise ServerError, 'ALIAS is required.' unless @name
-      raise ServerError, 'HOSTNAME is required.' unless @address
+      raise ServerError, 'ALIAS is required.' unless @name && !@name.empty?
+      raise ServerError, 'HOSTNAME is required.' unless @address && !@address.empty?
       raise ServerError, 'PORT is required.' unless @port
       raise ServerError, 'RCON is required' unless @rcon
     end
