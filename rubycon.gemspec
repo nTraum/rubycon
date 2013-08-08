@@ -24,6 +24,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency              'parallel',         '~> 0.7'
   s.add_dependency              'steam-condenser',  '~> 1.3'
   s.add_development_dependency  'minitest'
+  s.add_development_dependency  'coveralls'
   s.add_development_dependency  'minitest-reporters'
   s.add_development_dependency  'rake'
 end
