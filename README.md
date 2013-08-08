@@ -89,6 +89,7 @@ Need further help?
 
 # Code Status
 
+* [![Gem Version](https://badge.fury.io/rb/rubycon.png)](http://badge.fury.io/rb/rubycon)
 * [![Build Status](https://travis-ci.org/nTraum/rubycon.png?branch=master)](https://travis-ci.org/nTraum/rubycon)
 * [![Dependency Status](https://gemnasium.com/nTraum/rubycon.png)](https://gemnasium.com/nTraum/rubycon)
 * [![Code Climate](https://codeclimate.com/github/nTraum/rubycon.png)](https://codeclimate.com/github/nTraum/rubycon)
