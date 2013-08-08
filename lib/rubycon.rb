@@ -2,11 +2,7 @@ require 'colored'
 require 'fileutils'
 require 'parallel'
 require 'readline'
-require 'rubycon/config.rb'
-require 'rubycon/rcon_executor.rb'
-require 'rubycon/rcon_session.rb'
-require 'rubycon/server.rb'
-require 'rubycon/server_info.rb'
-require 'rubycon/version.rb'
 require 'steam-condenser'
 require 'yaml'
+
+Dir[File.join(File.dirname(__FILE__), 'rubycon', '*.rb')].each {|file| require file }
