@@ -15,7 +15,7 @@ Follow this gem on [Twitter](https://twitter.com/rubycon_cli).
 
 # Installation
 
-Rubycon was written in Ruby, Version 1.9.3 is minimum to run rubycon. (`ruby -v`).
+Rubycon was written in Ruby, Version 1.9.2 is minimum to run rubycon. (`ruby -v`).
 Make sure to have the following libraries installed:
 
 * RHEL based:   `yum install readline-devel bzip2-devel`
