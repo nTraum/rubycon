@@ -13,6 +13,7 @@ spec = Gem::Specification.new do |s|
   s.files = `git ls-files`.split($/)
   s.test_files  = Dir.glob("{spec,test}/**/*.rb")
 
+  s.required_ruby_version = '>= 1.9.2'
   s.require_paths << 'lib'
   s.bindir = 'bin'
   s.executables << 'rubycon'
