@@ -17,4 +17,4 @@ script: bundle exec rake test
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install libreadline-dev build-essential libxml2-dev libxslt1-dev
+  - sudo apt-get install libreadline-dev
