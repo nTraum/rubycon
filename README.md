@@ -18,8 +18,8 @@ Follow this gem on [Twitter](https://twitter.com/rubycon_cli).
 Rubycon was written in Ruby, Version 1.9.2 is minimum to run rubycon. (`ruby -v`).
 Make sure to have the following libraries installed:
 
-* RHEL based:   `yum install readline-devel bzip2-devel`
-* Debian based: `apt-get install libreadline-dev libbz2-dev`
+* RHEL based:   `yum install readline-devel`
+* Debian based: `apt-get install libreadline-dev`
 
 Install rubycon with the following command:
 

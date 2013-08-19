@@ -17,7 +17,6 @@ spec = Gem::Specification.new do |s|
   s.require_paths << 'lib'
   s.bindir = 'bin'
   s.executables << 'rubycon'
-  s.requirements << 'libbzip2'
   s.requirements << 'libreadline'
   s.add_dependency              'colored',          '~> 1.2'
   s.add_dependency              'gli',              '~> 2.5'
